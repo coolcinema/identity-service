@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-service
+  namespace: coolcinema
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity-service
+  template:
+    metadata:
+      labels:
+        app: identity-service
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: identity
+          # Замените OWNER на вашего пользователя/организацию (в нижнем регистре!)
+          image: ghcr.io/owner/identity-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
