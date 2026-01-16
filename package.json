@@ -4,7 +4,9 @@
   },
   "packageManager": "pnpm@10.25.0",
   "scripts": {
-    "start": "ts-node src/main.ts"
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "ts-node src/main.ts"
   },
   "devDependencies": {
     "@types/node": "^25.0.9",
