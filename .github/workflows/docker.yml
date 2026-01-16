@@ -23,7 +23,8 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          # Используем PAT организации (чтобы иметь доступ ко всем пакетам)
+          password: ${{ secrets.CI_PAT }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -31,6 +32,6 @@ jobs:
           context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          # Передаем токен как секрет (а не аргумент сборки)
+          # Передаем этот же PAT внутрь докера для npm install
           secrets: |
-            npm_token=${{ secrets.GITHUB_TOKEN }}
+            npm_token=${{ secrets.CI_PAT }}
