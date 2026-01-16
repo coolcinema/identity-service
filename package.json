@@ -2,6 +2,7 @@
   "dependencies": {
     "@coolcinema/registry": "^1.0.0"
   },
+  "packageManager": "pnpm@10.25.0",
   "scripts": {
     "start": "ts-node src/main.ts"
   },
