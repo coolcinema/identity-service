@@ -1,12 +1,19 @@
 # Stage 1: Build
 FROM node:20-alpine AS builder
+# Включаем pnpm
+RUN corepack enable
+
 WORKDIR /app
-COPY package*.json ./
-# Копируем .npmrc для доступа к приватному core-пакету
+COPY package.json pnpm-lock.yaml ./
 COPY .npmrc ./
-# Аргумент сборки для передачи токена
-ARG COOLCINEMA_GH_PKG_TOKEN
-RUN pnpm install
+
+# Безопасная установка зависимостей. 
+# Секрет 'npm_token' монтируется только на время выполнения команды.
+# Мы читаем его из файла и экспортируем в переменную окружения, которую ждет .npmrc
+RUN --mount=type=secret,id=npm_token \
+    export COOLCINEMA_GH_PKG_TOKEN=$(cat /run/secrets/npm_token) && \
+    pnpm install --frozen-lockfile
+
 COPY . .
 RUN pnpm run build
 
@@ -14,6 +21,5 @@ RUN pnpm run build
 FROM node:20-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 CMD ["node", "dist/main.js"]

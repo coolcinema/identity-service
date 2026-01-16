@@ -18,7 +18,7 @@ spec:
       containers:
         - name: identity
           # Замените OWNER на вашего пользователя/организацию (в нижнем регистре!)
-          image: ghcr.io/owner/identity-service:latest
+          image: ghcr.io/mr-scrpt/identity-service:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
