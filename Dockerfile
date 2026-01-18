@@ -16,6 +16,8 @@ RUN --mount=type=secret,id=npm_token \
 
 COPY . .
 RUN pnpm run build
+COPY src/proto ./dist/proto
+
 
 # Stage 2: Run
 FROM node:20-alpine
