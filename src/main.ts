@@ -20,7 +20,7 @@ const SalesServiceConstructor = protoDescriptor.coolcinema.sales.SalesService;
 const salesClient = createGrpcClient(
   SalesServiceConstructor,
   Registry.Sales.url, // "sales-service:5000"
-);
+) as any;
 
 // 3. HTTP Сервер для теста
 const server = createServer((req, res) => {
