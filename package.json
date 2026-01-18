@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@coolcinema/registry": "^1.0.2"
+    "@coolcinema/registry": "^1.0.8"
   },
   "packageManager": "pnpm@10.25.0",
   "scripts": {
