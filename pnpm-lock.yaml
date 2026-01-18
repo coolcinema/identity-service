@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@coolcinema/registry':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.2
+        version: 1.0.2
     devDependencies:
       '@types/node':
         specifier: ^25.0.9
@@ -24,8 +24,8 @@ importers:
 
 packages:
 
-  '@coolcinema/registry@1.0.0':
-    resolution: {integrity: sha512-drZebsBsU6QrWYI5/ZI/FPno5VNdhlx5v33YnxekXjz5Mf+nCbigtEDQRWyNprLoKTe4MHH9RCvAv+a9i+DkVQ==, tarball: https://npm.pkg.github.com/download/@coolcinema/registry/1.0.0/499765bd1ba995101bb48ad393ff677664064a91}
+  '@coolcinema/registry@1.0.2':
+    resolution: {integrity: sha512-UqreTa7sFNMDsIGz4Hjm/3EHl9UhIzmrBsxuoB/QjjSP1GJjsPWvbzR6RzDPxnjW7TuwC6+E3PIth7qd59naFw==, tarball: https://npm.pkg.github.com/download/@coolcinema/registry/1.0.2/d78b5a7d8454afa21c8f71fb876cd7112c8d8eb5}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -109,7 +109,7 @@ packages:
 
 snapshots:
 
-  '@coolcinema/registry@1.0.0': {}
+  '@coolcinema/registry@1.0.2': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:

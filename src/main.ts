@@ -1,7 +1,7 @@
 import { createServer } from "http";
-import { ServiceRegistry } from "@coolcinema/registry";
+import { Registry } from "@coolcinema/registry";
 
-const config = ServiceRegistry.Identity;
+const config = Registry.Ololo;
 const PORT = config.port;
 
 const server = createServer((req, res) => {
