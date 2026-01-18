@@ -51,7 +51,7 @@ const server = createServer((req, res) => {
         res.end(
           JSON.stringify(
             {
-              from: "Identity New test OLOLOL",
+              from: "===Identity===",
               sales_response: response,
               sent_trace_id: fakeContext.traceId,
             },
