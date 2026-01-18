@@ -1,53 +1,69 @@
+import * as path from "path";
 import { createServer } from "http";
+import * as protoLoader from "@grpc/proto-loader";
+import * as grpc from "@grpc/grpc-js";
+import { createGrpcClient, runInContext } from "@coolcinema/foundation";
 import { Registry } from "@coolcinema/registry";
 
-const myConfig = Registry.Identity;
-// URL берется из реестра автоматически: http://sales-service.coolcinema.svc.cluster.local:5000
-const salesUrl = Registry.Sales.url;
+// 1. Загружаем Proto (чтобы знать структуру клиента)
+const PROTO_PATH = path.join(__dirname, "proto/sales.proto");
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+  keepCase: true,
+  defaults: true,
+  oneofs: true,
+});
+const protoDescriptor = grpc.loadPackageDefinition(packageDefinition) as any;
+const SalesServiceConstructor = protoDescriptor.coolcinema.sales.SalesService;
 
-const server = createServer(async (req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
+// 2. Создаем gRPC клиент через фабрику Foundation
+// Она сама добавит интерцепторы
+const salesClient = createGrpcClient(
+  SalesServiceConstructor,
+  Registry.Sales.url, // "sales-service:5000"
+);
 
-  try {
-    // Делаем запрос к соседнему сервису
-    console.log(`[Identity] Calling Sales at ${salesUrl}...`);
-    const salesResponse = await fetch(salesUrl);
-    const salesData = await salesResponse.json();
+// 3. HTTP Сервер для теста
+const server = createServer((req, res) => {
+  // Эмулируем входящий запрос с заголовками (TraceID)
+  // В реальности это сделает HTTP Middleware
+  const fakeContext = {
+    traceId: "trace-" + Math.random().toString(36).substr(2, 9),
+    routingHeaders: {
+      "x-telepresence-intercept-id":
+        req.headers["x-telepresence-intercept-id"] || "",
+    },
+  };
 
-    res.end(
-      JSON.stringify(
-        {
-          service: "Identity Service",
-          status: "OK",
-          integration_test: {
-            target: "Sales Service",
-            success: true,
-            response_from_sales: salesData,
-          },
-        },
-        null,
-        2,
-      ),
+  // Запускаем контекст
+  runInContext(fakeContext as any, () => {
+    console.log(
+      `[Identity] Calling Sales with TraceID: ${fakeContext.traceId}`,
     );
-  } catch (error) {
-    console.error("[Identity] Call failed:", error);
-    res.end(
-      JSON.stringify(
-        {
-          service: "Identity Service",
-          status: "Partial",
-          integration_test: {
-            success: false,
-            error: String(error),
-          },
-        },
-        null,
-        2,
-      ),
-    );
-  }
+
+    // Вызываем gRPC метод
+    salesClient.getPrice({ showtime_id: "123" }, (err: any, response: any) => {
+      res.writeHead(200, { "Content-Type": "application/json" });
+
+      if (err) {
+        console.error("gRPC Error:", err);
+        res.end(JSON.stringify({ error: err.message }));
+      } else {
+        res.end(
+          JSON.stringify(
+            {
+              from: "Identity",
+              sales_response: response,
+              sent_trace_id: fakeContext.traceId,
+            },
+            null,
+            2,
+          ),
+        );
+      }
+    });
+  });
 });
 
-server.listen(myConfig.port, () => {
-  console.log(`🚀 ${myConfig.name} is running on port ${myConfig.port}`);
+server.listen(Registry.Identity.port, () => {
+  console.log(`🚀 Identity running on ${Registry.Identity.port}`);
 });
