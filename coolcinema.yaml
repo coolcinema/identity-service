@@ -9,6 +9,6 @@ metadata:
   language: typescript
 interfaces:
   grpc:
-    idetity:
+    identity:
       proto: src/proto/identity.proto
       port: 5000

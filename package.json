@@ -1,21 +1,28 @@
 {
-  "dependencies": {
-    "@coolcinema/api": "^1.0.5",
-    "@coolcinema/foundation": "^1.0.1",
-    "@coolcinema/registry": "^1.0.20",
-    "@grpc/grpc-js": "^1.14.3",
-    "@grpc/proto-loader": "^0.8.0"
-  },
+  "name": "identity-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "packageManager": "pnpm@10.25.0",
+  "type": "module",
+  "dependencies": {
+    "@coolcinema/api": "^1.0.14",
+    "@coolcinema/catalog": "^1.0.14",
+    "@coolcinema/foundation": "^1.0.1",
+    "nice-grpc": "^2.1.14",
+    "nice-grpc-common": "^2.0.2"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
     "dev": "tsx --import ./src/telemetry.ts src/main.ts"
   },
   "devDependencies": {
-    "@coolcinema/cli": "^2.0.5",
+    "@coolcinema/cli": "^2.0.14",
     "@types/node": "^25.0.9",
-    "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
