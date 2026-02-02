@@ -1,16 +1,16 @@
 import { createServer } from "http";
-import { SalesService } from "@coolcinema/api"; // Клиент Sales!
+
+import { Clients } from "./client.js";
 
 const server = createServer(async (req, res) => {
   console.log("[Identity] Received HTTP request");
 
   try {
-    // Вызов Sales через платформу
-    const price = await SalesService.grpc.sales.getPrice({
+    const price = await Clients.sales.getPrice({
       showtimeId: "ticket-1",
     });
 
-    res.end(JSON.stringify({ from: "Identity", sales_says: price }));
+    res.end(JSON.stringify({ from: "Identity===", sales_says: price }));
   } catch (e) {
     res.statusCode = 500;
     res.end(String(e));

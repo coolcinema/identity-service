@@ -1,4 +1,6 @@
 node_modules/
+# Generated types
+src/_gen/
 dist/
 build/
 coverage/

@@ -9,20 +9,28 @@
   "packageManager": "pnpm@10.25.0",
   "type": "module",
   "dependencies": {
-    "@coolcinema/api": "^1.0.14",
-    "@coolcinema/catalog": "^1.0.14",
-    "@coolcinema/foundation": "^1.0.1",
+    "@bufbuild/protobuf": "^2.11.0",
+    "@coolcinema/api": "^1.0.15",
+    "@coolcinema/contracts": "^2.0.36",
+    "@coolcinema/foundation": "^2.0.43",
     "nice-grpc": "^2.1.14",
-    "nice-grpc-common": "^2.0.2"
+    "nice-grpc-common": "^2.0.2",
+    "zod": "^4.3.6"
   },
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
-    "dev": "tsx --import ./src/telemetry.ts src/main.ts"
+    "dev": "tsx --import ./src/telemetry.ts src/main.ts",
+    "gen:http": "openapi-typescript ./node_modules/@coolcinema/contracts/schemas/sales-service_main.yaml -o src/generated/http/sales.d.ts",
+    "gen": "pnpm gen:grpc && pnpm gen:http"
   },
   "devDependencies": {
-    "@coolcinema/cli": "^2.0.14",
+    "@bufbuild/buf": "^1.64.0",
+    "@coolcinema/cli": "^4.0.11",
     "@types/node": "^25.0.9",
+    "bufbuild": "^0.2.0",
+    "openapi-typescript": "^7.10.1",
+    "ts-proto": "^2.11.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

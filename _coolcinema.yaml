@@ -8,16 +8,7 @@ grpc:
     files:
       - src/proto/identity.proto
     port: 5000
-
 ingress:
   main:
     port: 3000
     path: /
-
-http:
-  api:
-    port: 3000
-    spec: dist/openapi.yaml
-
-events:
-  spec: src/events/asyncapi.yaml
